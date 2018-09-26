@@ -9,6 +9,7 @@ REQUIREMENTS
 
 USAGE
 
+0. Upload files to your web server
 1. Either edit your existing Slack app or create a new one
 2. Obtain the Signing Secret under the app's "Settings > Basic Information" 
    page and save it to config.ini.php file
