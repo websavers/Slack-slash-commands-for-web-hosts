@@ -26,7 +26,6 @@ if ( ! hash_equals($_SERVER['HTTP_X_SLACK_SIGNATURE'], $computed_sig) ) die("Sla
 switch( $command ) {
   
   case '/isitup':
-
       # Get JSON version. If it's not a valid domain, isitup.org will respond with a `3`.
       $isitupurl = "https://isitup.org/".$text.".json";
 
@@ -59,27 +58,31 @@ switch( $command ) {
       
   case '/getip':
   case '/host':
-  
       $reply = gethostbyname($text);
       break;
       
   case '/whois':
-      $output = array();
-      exec("whois $text", $output);
-      $reply = "```" . implode("\n", $output) . "```";
+      $reply = get_from_term("whois $text");
       break;
       
   case '/ping':
-      $output = array();
-      exec("ping -c1 $text", $output);
-      $reply = "```" . implode("\n", $output) . "```";
+      $reply = get_from_term("ping -c1 $text");
+      break;
+      
+  case '/dig':
+      $reply = get_from_term("dig $text");
       break;
       
   default:
-  
       $reply = "The command '$command' is invalid.";
       
 }
 
 # Send the reply back to the user. 
 echo $reply;
+
+function get_from_term($cmd){
+  $output = array();
+  exec($cmd, $output);
+  return "```" . implode("\n", $output) . "```";
+}
